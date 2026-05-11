@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>系统架构图</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Microsoft YaHei", "SimHei", sans-serif; background: #fff; display: flex; justify-content: center; padding: 40px 20px; }
+  .diagram { width: 820px; }
+  .layer { display: flex; align-items: stretch; }
+  .layer-label { width: 80px; min-width: 80px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold; color: #222; padding-right: 10px; text-align: center; }
+  .layer-box { flex: 1; border: 1.5px solid #333; padding: 14px 16px; }
+  .layer-title { text-align: center; font-size: 14px; font-weight: bold; margin-bottom: 12px; color: #111; }
+  .module-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .module { border: 1.5px solid #333; padding: 9px 16px; font-size: 13px; text-align: center; color: #111; background: #fff; white-space: nowrap; }
+  .two-col { display: flex; gap: 12px; margin-bottom: 10px; }
+  .module-col { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .module-col .module { white-space: normal; }
+  /* 箭头区：左侧留 80px label 宽度，箭头居中于内容区 */
+  .arrow-gap { display: flex; height: 36px; align-items: center; }
+  .arrow-gap .spacer { width: 80px; min-width: 80px; padding-right: 10px; }
+  .arrow-gap .arrow-center { flex: 1; display: flex; justify-content: center; align-items: center; }
+  .tech-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+  .tech-tag { border: 1.5px solid #555; padding: 5px 14px; font-size: 12px; color: #333; background: #f8f8f8; }
+  .caption { text-align: center; font-size: 13px; color: #444; margin-top: 18px; }
+</style>
+</head>
+<body>
+<div class="diagram">
+
+  <div class="layer">
+    <div class="layer-label">应用表示层</div>
+    <div class="layer-box">
+      <div class="layer-title">用户交互界面</div>
+      <div class="module-row">
+        <div class="module">首页</div>
+        <div class="module">推理展示页</div>
+        <div class="module">数据管理页</div>
+        <div class="module">系统配置页</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-gap">
+    <div class="spacer"></div>
+    <div class="arrow-center">
+      <svg width="20" height="36" viewBox="0 0 20 36">
+        <line x1="10" y1="0" x2="10" y2="26" stroke="#333" stroke-width="1.5"/>
+        <polygon points="10,36 4,22 16,22" fill="#333"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="layer-label">推理展示层</div>
+    <div class="layer-box">
+      <div class="layer-title">可视化推理引擎（增量式子问题展示）</div>
+      <div class="two-col">
+        <div class="module-col">
+          <div class="module">主工作流轨迹<br><span style="font-size:11px;color:#555">增量追加子问题节点</span></div>
+          <div class="module">任务概览面板<br><span style="font-size:11px;color:#555">未开始空态 / 动态列表</span></div>
+        </div>
+        <div class="module-col">
+          <div class="module">子工作流节点流<br><span style="font-size:11px;color:#555">仅展示已执行路径</span></div>
+          <div class="module">节点详情面板<br><span style="font-size:11px;color:#555">推理启动后按需展示</span></div>
+        </div>
+        <div class="module-col">
+          <div class="module">最终结论面板<br><span style="font-size:11px;color:#555">满足条件后延迟显示</span></div>
+          <div class="module">异常决策弹窗</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-gap">
+    <div class="spacer"></div>
+    <div class="arrow-center">
+      <svg width="20" height="36" viewBox="0 0 20 36">
+        <line x1="10" y1="0" x2="10" y2="26" stroke="#333" stroke-width="1.5"/>
+        <polygon points="10,36 4,22 16,22" fill="#333"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="layer-label">状态管理层</div>
+    <div class="layer-box">
+      <div class="layer-title">全局状态管理</div>
+      <div class="module-row">
+        <div class="module">推理状态管理<br><span style="font-size:11px;color:#555">hasStarted / visibleSubQuestions / isFinalAnswerReady</span></div>
+        <div class="module">任务队列管理</div>
+        <div class="module">系统参数配置</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-gap">
+    <div class="spacer"></div>
+    <div class="arrow-center">
+      <svg width="20" height="36" viewBox="0 0 20 36">
+        <line x1="10" y1="0" x2="10" y2="26" stroke="#333" stroke-width="1.5"/>
+        <polygon points="10,36 4,22 16,22" fill="#333"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="layer-label">推理算法层</div>
+    <div class="layer-box">
+      <div class="layer-title">何时检索 — 如何检索 — 如何核查纠偏</div>
+      <div class="two-col" style="margin-bottom:10px;">
+        <div class="module-col">
+          <div class="module" style="font-weight:bold;">自适应多步检索增强生成</div>
+          <div class="module">提示驱动迭代推理控制框架</div>
+          <div class="module">实体流行度感知检索决策</div>
+          <div class="module">交叉编码器小模型重排序</div>
+        </div>
+        <div class="module-col">
+          <div class="module" style="font-weight:bold;">信息增益驱动的查询重写</div>
+          <div class="module">多视角候选重写生成</div>
+          <div class="module">拒绝采样优选机制</div>
+          <div class="module">轻量化专职重写器</div>
+        </div>
+        <div class="module-col">
+          <div class="module" style="font-weight:bold;">检索后证据自反思</div>
+          <div class="module">文档级状态判别模块</div>
+          <div class="module">状态路由（精炼/过滤/补充）</div>
+          <div class="module">集合级充分性检验</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-gap">
+    <div class="spacer"></div>
+    <div class="arrow-center">
+      <svg width="20" height="36" viewBox="0 0 20 36">
+        <line x1="10" y1="0" x2="10" y2="26" stroke="#333" stroke-width="1.5"/>
+        <polygon points="10,36 4,22 16,22" fill="#333"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="layer-label">数据层</div>
+    <div class="layer-box">
+      <div class="layer-title">RAG 数据资产</div>
+      <div class="module-row">
+        <div class="module">法条库 / 判例库</div>
+        <div class="module">实体流行度知识库</div>
+        <div class="module">向量索引</div>
+        <div class="module">推理历史记录</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:16px;"></div>
+  <div class="tech-row">
+    <div class="tech-tag">Vue 3</div>
+    <div class="tech-tag">Vite</div>
+    <div class="tech-tag">Pinia</div>
+    <div class="tech-tag">Vue Router</div>
+    <div class="tech-tag">Naive UI</div>
+    <div class="tech-tag">GSAP</div>
+    <div class="tech-tag">BM25 + Dense 混合检索</div>
+    <div class="tech-tag">CrossEncoder 重排序</div>
+    <div class="tech-tag">GPT-4o</div>
+  </div>
+
+  <div class="caption">图：复杂任务筹划可视化推理系统架构图</div>
+</div>
+</body>
+</html>
